@@ -83,14 +83,20 @@ export const profiles = pgTable("profiles", {
   updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
 });
 
-export const workspaces = pgTable("workspaces", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  ownerId: uuid("ownerId")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  name: text("name").notNull().default("Personal"),
-  createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
-});
+export const workspaces = pgTable(
+  "workspaces",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    ownerId: uuid("ownerId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    name: text("name").notNull().default("Personal"),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+  },
+  (t) => ({
+    ownerIdx: uniqueIndex("workspaces_ownerId").on(t.ownerId),
+  }),
+);
 
 export const workspaceMembers = pgTable(
   "workspace_members",
