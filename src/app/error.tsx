@@ -8,7 +8,7 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <main className="flex flex-1 flex-col items-center justify-center p-6">
+    <section className="flex flex-1 flex-col items-center justify-center p-6">
       <h1 className="text-xl font-semibold">Something went wrong</h1>
       <p className="mt-2 text-sm text-gray-600">{error.message}</p>
       <button
@@ -18,6 +18,6 @@ export default function Error({
       >
         Try again
       </button>
-    </main>
+    </section>
   );
 }

@@ -1,10 +1,10 @@
 export default function Home() {
   return (
-    <main id="main" className="flex flex-1 flex-col items-center justify-center p-6">
+    <section className="flex flex-1 flex-col items-center justify-center p-6">
       <h1 className="text-3xl font-semibold">Life RPG</h1>
       <p className="mt-2 text-sm text-gray-600">
         Cozy life management with optional progression.
       </p>
-    </main>
+    </section>
   );
 }

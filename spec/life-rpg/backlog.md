@@ -42,7 +42,7 @@ LR-001–LR-017 ─────────────────────�
 - **Acceptance:** Queries derive authorization from session, never caller-supplied owner ID.
 - **Definition of done:** Auth error states, migrations, API contract, and security tests pass.
 
-## LR-004 — Build accessible application shell and navigation
+## LR-004 — Build accessible application shell and navigation ✅
 - **Objective:** Provide responsive functional navigation.
 - **Dependencies:** LR-001, LR-003.
 - **Scope:** Page layouts, navigation, design tokens, keyboard/focus patterns, reduced-motion foundation.
