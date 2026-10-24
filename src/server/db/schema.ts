@@ -4,6 +4,8 @@ import {
   text,
   timestamp,
   integer,
+  boolean,
+  date,
   uniqueIndex,
   index,
 } from "drizzle-orm/pg-core";
@@ -119,6 +121,113 @@ export const workspaceMembers = pgTable(
   }),
 );
 
-export type User = typeof users.$inferSelect;
-export type Profile = typeof profiles.$inferSelect;
-export type Workspace = typeof workspaces.$inferSelect;
+// --- LR-005: projects, tasks, tags, activity logs ---
+export const projects = pgTable(
+  "projects",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    workspaceId: uuid("workspaceId")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    parentId: uuid("parentId").references((): any => projects.id, {
+      onDelete: "set null",
+    }),
+    name: text("name").notNull(),
+    description: text("description"),
+    archivedAt: timestamp("archivedAt", { mode: "date" }),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
+  },
+  (t) => ({
+    workspaceIdx: index("projects_workspaceId").on(t.workspaceId),
+  }),
+);
+
+export const tasks = pgTable(
+  "tasks",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    workspaceId: uuid("workspaceId")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    projectId: uuid("projectId").references(() => projects.id, {
+      onDelete: "set null",
+    }),
+    parentTaskId: uuid("parentTaskId").references((): any => tasks.id, {
+      onDelete: "set null",
+    }),
+    title: text("title").notNull(),
+    status: text("status").notNull().default("todo"),
+    dueDate: date("dueDate"),
+    estimateMinutes: integer("estimateMinutes"),
+    personalPoints: integer("personalPoints").notNull().default(0),
+    completedAt: timestamp("completedAt", { mode: "date" }),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
+  },
+  (t) => ({
+    workspaceIdx: index("tasks_workspaceId").on(t.workspaceId),
+    projectIdx: index("tasks_projectId").on(t.projectId),
+  }),
+);
+
+export const tags = pgTable(
+  "tags",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    workspaceId: uuid("workspaceId")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+  },
+  (t) => ({
+    workspaceNameIdx: uniqueIndex("tags_workspace_name").on(
+      t.workspaceId,
+      t.name,
+    ),
+  }),
+);
+
+export const taskTags = pgTable(
+  "task_tags",
+  {
+    taskId: uuid("taskId")
+      .notNull()
+      .references(() => tasks.id, { onDelete: "cascade" }),
+    tagId: uuid("tagId")
+      .notNull()
+      .references(() => tags.id, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    pk: uniqueIndex("task_tags_task_tag").on(t.taskId, t.tagId),
+  }),
+);
+
+export const activityLogs = pgTable(
+  "activity_logs",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    workspaceId: uuid("workspaceId")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    taskId: uuid("taskId").references(() => tasks.id, { onDelete: "set null" }),
+    projectId: uuid("projectId").references(() => projects.id, {
+      onDelete: "set null",
+    }),
+    kind: text("kind").notNull().default("activity"),
+    occurredAt: timestamp("occurredAt", { mode: "date" })
+      .defaultNow()
+      .notNull(),
+    durationMinutes: integer("durationMinutes"),
+    notes: text("notes"),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+  },
+  (t) => ({
+    workspaceIdx: index("activity_logs_workspaceId").on(t.workspaceId),
+  }),
+);
+
+export type Project = typeof projects.$inferSelect;
+export type Task = typeof tasks.$inferSelect;
+export type Tag = typeof tags.$inferSelect;

@@ -51,7 +51,7 @@ LR-001–LR-017 ─────────────────────�
 - **Acceptance:** Tasks, timer, calendar, quests and reports are directly reachable without a decorative home step.
 - **Definition of done:** Responsive/a11y checks in CI; loading, empty and error states included.
 
-## LR-005 — Add projects, tasks, hierarchy, tags, and quick activity logs
+## LR-005 — Add projects, tasks, hierarchy, tags, and quick activity logs ✅
 - **Objective:** Deliver practical organization independent of game systems.
 - **Dependencies:** LR-003, LR-004.
 - **Scope:** CRUD/archive for nested projects, tasks/subtasks, workspace tags, task status, quick activity logs; validate same-workspace links and acyclic parents.

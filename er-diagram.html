@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Life RPG ER Diagram</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #f7f1e8; color: #3a332a; margin: 0; padding: 24px; }
+    h1 { margin: 0 0 16px; }
+    .mermaid { background: #fffaf2; padding: 16px; border-radius: 8px; }
+    #err { color: #b00020; margin-top: 12px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Life RPG — ER Diagram (LR-001 to LR-003)</h1>
+  <div class="mermaid">
+erDiagram
+  users {
+    uuid id PK
+    text name
+    text email
+    timestamp createdAt
+  }
+  profiles {
+    uuid id PK
+    uuid userId
+    text displayName
+    text timezone
+    text locale
+    timestamp createdAt
+    timestamp updatedAt
+  }
+  workspaces {
+    uuid id PK
+    uuid ownerId
+    text name
+    timestamp createdAt
+  }
+  workspace_members {
+    uuid id PK
+    uuid workspaceId
+    uuid userId
+    text role
+    timestamp createdAt
+  }
+  accounts {
+    uuid id PK
+    uuid userId
+    text type
+    text provider
+    text providerAccountId
+  }
+  sessions {
+    uuid id PK
+    text sessionToken
+    uuid userId
+    timestamp expires
+  }
+  verification_tokens {
+    text identifier
+    text token
+    timestamp expires
+  }
+  users ||--|| profiles : "has"
+  users ||--o{ workspaces : "owns"
+  users ||--o{ workspace_members : "member of"
+  workspaces ||--o{ workspace_members : "has members"
+  users ||--o{ accounts : "has"
+  users ||--o{ sessions : "has"
+  </div>
+  <div id="err"></div>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    window.addEventListener('error', (e) => { document.getElementById('err').textContent += e.message + '\\n'; });
+  </script>
+</body>
+</html>
