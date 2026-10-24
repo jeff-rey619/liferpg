@@ -15,7 +15,7 @@ LR-006 + LR-007 + LR-010 ──────────────────�
 LR-001–LR-017 ───────────────────────────────────────→ LR-018 → LR-019 (gated)
 ```
 
-## LR-001 — Bootstrap responsive application and quality gates
+## LR-001 — Bootstrap responsive application and quality gates ✅
 - **Objective:** Establish a reproducible TypeScript web application foundation.
 - **Dependencies:** None.
 - **Scope:** Next.js skeleton, environment validation, lint/typecheck/test scripts, CI, error handling, responsive base layout.
@@ -24,7 +24,7 @@ LR-001–LR-017 ─────────────────────�
 - **Acceptance:** Clean checkout builds; CI runs checks; secrets stay server-side.
 - **Definition of done:** Scripts and CI documented, checks green, no credentials committed.
 
-## LR-002 — Add PostgreSQL, migrations, and test database workflow
+## LR-002 — Add PostgreSQL, migrations, and test database workflow ✅
 - **Objective:** Make schema changes repeatable and constraints testable.
 - **Dependencies:** LR-001.
 - **Scope:** PostgreSQL connection, Drizzle configuration, migration scripts, isolated test DB and fixtures.
