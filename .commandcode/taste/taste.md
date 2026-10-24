@@ -1,0 +1,2 @@
+- Prefers detailed, pre-implementation technical documentation—including architecture, phased roadmaps, and atomic implementation backlogs—with explicit, model-friendly instructions and decision boundaries that minimize guessing or hallucination; do not start coding until the plan is reviewed and approved. Confidence: 0.98.
+- Prefers project changes to be accompanied by files organized in a dedicated spec or arc folder for each change. Confidence: 0.84.
