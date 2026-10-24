@@ -12,7 +12,7 @@
   </style>
 </head>
 <body>
-  <h1>Life RPG — ER Diagram (LR-001 to LR-003)</h1>
+  <h1>Life RPG — ER Diagram (LR-001 to LR-005)</h1>
   <div class="mermaid">
 erDiagram
   users {
@@ -61,12 +61,69 @@ erDiagram
     text token
     timestamp expires
   }
+  projects {
+    uuid id PK
+    uuid workspaceId
+    uuid parentId
+    text name
+    text description
+    timestamp archivedAt
+    timestamp createdAt
+    timestamp updatedAt
+  }
+  tasks {
+    uuid id PK
+    uuid workspaceId
+    uuid projectId
+    uuid parentTaskId
+    text title
+    text status
+    date dueDate
+    int estimateMinutes
+    int personalPoints
+    timestamp completedAt
+    timestamp createdAt
+    timestamp updatedAt
+  }
+  tags {
+    uuid id PK
+    uuid workspaceId
+    text name
+    timestamp createdAt
+  }
+  task_tags {
+    uuid taskId
+    uuid tagId
+  }
+  activity_logs {
+    uuid id PK
+    uuid workspaceId
+    uuid taskId
+    uuid projectId
+    text kind
+    timestamp occurredAt
+    int durationMinutes
+    text notes
+    timestamp createdAt
+  }
+
   users ||--|| profiles : "has"
   users ||--o{ workspaces : "owns"
   users ||--o{ workspace_members : "member of"
   workspaces ||--o{ workspace_members : "has members"
   users ||--o{ accounts : "has"
   users ||--o{ sessions : "has"
+  workspaces ||--o{ projects : "has"
+  projects ||--o{ projects : "parent of"
+  workspaces ||--o{ tasks : "has"
+  projects ||--o{ tasks : "contains"
+  tasks ||--o{ tasks : "parent of"
+  workspaces ||--o{ tags : "has"
+  tasks ||--o{ task_tags : "tagged"
+  tags ||--o{ task_tags : "used by"
+  workspaces ||--o{ activity_logs : "has"
+  tasks ||--o{ activity_logs : "logged for"
+  projects ||--o{ activity_logs : "logged for"
   </div>
   <div id="err"></div>
   <script>
