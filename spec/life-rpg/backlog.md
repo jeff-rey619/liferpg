@@ -33,7 +33,7 @@ LR-001–LR-017 ─────────────────────�
 - **Acceptance:** Schema can be built from migrations in a new environment; tests cannot target production DB.
 - **Definition of done:** Migration/test workflow documented and CI verified.
 
-## LR-003 — Implement identity, profiles, workspace ownership, and private defaults
+## LR-003 — Implement identity, profiles, workspace ownership, and private defaults ✅
 - **Objective:** Establish authenticated owner scope before domain records.
 - **Dependencies:** LR-002.
 - **Scope:** Auth.js sessions, profiles/timezone, one personal workspace, route guards, owner/workspace resolution.
