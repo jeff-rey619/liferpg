@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "timer_sessions_one_running" ON "timer_sessions" USING btree ("userId") WHERE state = 'running';

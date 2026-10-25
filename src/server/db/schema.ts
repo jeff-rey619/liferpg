@@ -10,6 +10,7 @@ import {
   uniqueIndex,
   index,
 } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 // --- Auth.js (next-auth) tables ---
 export const users = pgTable("users", {
@@ -252,6 +253,7 @@ export const timerSessions = pgTable(
   },
   (t) => ({
     userIdx: index("timer_sessions_userId").on(t.userId),
+    oneRunning: uniqueIndex("timer_sessions_one_running").on(t.userId).where(sql`state = 'running'`),
   }),
 );
 

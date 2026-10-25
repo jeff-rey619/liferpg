@@ -60,7 +60,7 @@ LR-001–LR-017 ─────────────────────�
 - **Acceptance:** All data owner-scoped; quick log works without a task/project.
 - **Definition of done:** API/domain contracts, empty/error states, behavior and access tests complete.
 
-## LR-006 — Implement actual time, timers, manual corrections, timesheets, and project reports
+## LR-006 — Implement actual time, timers, manual corrections, timesheets, and project reports ✅
 - **Objective:** Deliver reliable time tracking separate from schedule.
 - **Dependencies:** LR-005.
 - **Scope:** Start/pause/resume/stop timer, optional task/project link, manual entries/corrections, daily/weekly timesheets, project totals, default no-overlap policy.

@@ -7,105 +7,49 @@
   <style>
     body { font-family: system-ui, sans-serif; background: #f7f1e8; color: #3a332a; margin: 0; padding: 24px; }
     h1 { margin: 0 0 16px; }
-    .mermaid { background: #fffaf2; padding: 16px; border-radius: 8px; }
+    .mermaid { background: #fffaf2; padding: 16px; border-radius: 8px; overflow: auto; }
+    .mermaid svg { min-width: 100%; height: auto; transform: scale(1.3); transform-origin: top left; }
     #err { color: #b00020; margin-top: 12px; white-space: pre-wrap; }
   </style>
 </head>
 <body>
-  <h1>Life RPG — ER Diagram (LR-001 to LR-005)</h1>
+  <h1>Life RPG — Full ER Diagram (all planned tables)</h1>
   <div class="mermaid">
 erDiagram
-  users {
-    uuid id PK
-    text name
-    text email
-    timestamp createdAt
-  }
-  profiles {
-    uuid id PK
-    uuid userId
-    text displayName
-    text timezone
-    text locale
-    timestamp createdAt
-    timestamp updatedAt
-  }
-  workspaces {
-    uuid id PK
-    uuid ownerId
-    text name
-    timestamp createdAt
-  }
-  workspace_members {
-    uuid id PK
-    uuid workspaceId
-    uuid userId
-    text role
-    timestamp createdAt
-  }
-  accounts {
-    uuid id PK
-    uuid userId
-    text type
-    text provider
-    text providerAccountId
-  }
-  sessions {
-    uuid id PK
-    text sessionToken
-    uuid userId
-    timestamp expires
-  }
-  verification_tokens {
-    text identifier
-    text token
-    timestamp expires
-  }
-  projects {
-    uuid id PK
-    uuid workspaceId
-    uuid parentId
-    text name
-    text description
-    timestamp archivedAt
-    timestamp createdAt
-    timestamp updatedAt
-  }
-  tasks {
-    uuid id PK
-    uuid workspaceId
-    uuid projectId
-    uuid parentTaskId
-    text title
-    text status
-    date dueDate
-    int estimateMinutes
-    int personalPoints
-    timestamp completedAt
-    timestamp createdAt
-    timestamp updatedAt
-  }
-  tags {
-    uuid id PK
-    uuid workspaceId
-    text name
-    timestamp createdAt
-  }
-  task_tags {
-    uuid taskId
-    uuid tagId
-  }
-  activity_logs {
-    uuid id PK
-    uuid workspaceId
-    uuid taskId
-    uuid projectId
-    text kind
-    timestamp occurredAt
-    int durationMinutes
-    text notes
-    timestamp createdAt
-  }
+  users { uuid id PK  text name  text email  timestamp createdAt }
+  profiles { uuid id PK  uuid userId  text displayName  text timezone  text locale }
+  workspaces { uuid id PK  uuid ownerId  text name  timestamp createdAt }
+  workspace_members { uuid id PK  uuid workspaceId  uuid userId  text role }
+  accounts { uuid id PK  uuid userId  text provider  text providerAccountId }
+  sessions { uuid id PK  text sessionToken  uuid userId  timestamp expires }
+  verification_tokens { text identifier  text token  timestamp expires }
+  projects { uuid id PK  uuid workspaceId  uuid parentId  text name  timestamp archivedAt }
+  tasks { uuid id PK  uuid workspaceId  uuid projectId  uuid parentTaskId  text title  text status  date dueDate  int personalPoints }
+  tags { uuid id PK  uuid workspaceId  text name }
+  task_tags { uuid taskId  uuid tagId }
+  activity_logs { uuid id PK  uuid workspaceId  uuid taskId  uuid projectId  text kind  timestamp occurredAt  int durationMinutes }
+  timer_sessions { uuid id PK  uuid workspaceId  uuid userId  uuid taskId  text state  timestamp startedAt  int accumulatedSeconds }
+  time_entries { uuid id PK  uuid workspaceId  uuid userId  uuid taskId  uuid projectId  text source  timestamp startedAt  timestamp endedAt  int durationSeconds }
+  schedule_rules { uuid id PK  uuid workspaceId  uuid taskId  text rrule  text timezone  text localStartTime  int version }
+  task_occurrences { uuid id PK  uuid ruleId  uuid taskId  text occurrenceKey  timestamp scheduledStart  text status }
+  notifications { uuid id PK  uuid userId  uuid workspaceId  text type  text title  timestamp scheduledAt  timestamp deliveredAt  timestamp readAt  text dedupeKey }
+  personal_point_transactions { uuid id PK  uuid userId  uuid workspaceId  uuid taskId  uuid achievementId  int amount  text reason  text idempotencyKey }
+  xp_events { uuid id PK  uuid userId  text sourceType  uuid sourceId  int amount  text idempotencyKey }
+  achievement_definitions { uuid id PK  uuid workspaceId  uuid parentId  text goalType  text title  text progressionMode  int target  text recurrence  text ruleVersion }
+  task_achievement_links { uuid id PK  uuid taskId  uuid achievementId  int contribution  text ruleVersion }
+  achievement_periods { uuid id PK  uuid achievementId  text periodKey  timestamp periodStart  timestamp periodEnd  text ruleVersion  int progress  text status }
+  achievement_evidence { uuid id PK  uuid periodId  uuid achievementId  text sourceType  uuid sourceId  int contribution }
+  companion_relationships { uuid id PK  uuid inviterId  uuid recipientId  text state  text invitationTokenHash  timestamp expiresAt }
+  companion_permission_grants { uuid id PK  uuid relationshipId  uuid ownerId  text permissionKey  text resourceScope  timestamp grantedAt  timestamp revokedAt }
+  comments { uuid id PK  uuid authorId  uuid relationshipId  text targetType  uuid targetId  text body  timestamp deletedAt }
+  companion_awards { uuid id PK  uuid relationshipId  uuid actorId  uuid recipientId  uuid taskId  int amount  text idempotencyKey }
+  milestones { uuid id PK  uuid workspaceId  text title  int currentVersion  text status }
+  milestone_versions { uuid id PK  uuid milestoneId  int version  text description  jsonb evidenceSnapshot  uuid authorId }
+  review_requests { uuid id PK  uuid versionId  uuid milestoneId  uuid reviewerRelationshipId  text state }
+  review_decisions { uuid id PK  uuid requestId  uuid reviewerId  text decision  text feedback  text idempotencyKey }
+  badges { uuid id PK  text name  text description  text icon }
+  recognition_records { uuid id PK  uuid milestoneId  uuid versionId  uuid requestId  uuid badgeId  text appreciation  timestamp awardedAt }
+  audit_events { uuid id PK  uuid actorId  text action  text targetType  uuid targetId  jsonb metadata  timestamp createdAt }
 
   users ||--|| profiles : "has"
   users ||--o{ workspaces : "owns"
@@ -124,10 +68,58 @@ erDiagram
   workspaces ||--o{ activity_logs : "has"
   tasks ||--o{ activity_logs : "logged for"
   projects ||--o{ activity_logs : "logged for"
+  workspaces ||--o{ timer_sessions : "has"
+  users ||--o{ timer_sessions : "runs"
+  tasks ||--o{ timer_sessions : "tracked for"
+  workspaces ||--o{ time_entries : "has"
+  users ||--o{ time_entries : "logged by"
+  tasks ||--o{ time_entries : "tracked for"
+  projects ||--o{ time_entries : "tracked for"
+  workspaces ||--o{ schedule_rules : "has"
+  tasks ||--o{ schedule_rules : "scheduled"
+  schedule_rules ||--o{ task_occurrences : "generates"
+  tasks ||--o{ task_occurrences : "occurrence of"
+  users ||--o{ notifications : "receives"
+  workspaces ||--o{ notifications : "scoped to"
+  task_occurrences ||--o{ notifications : "reminds"
+  users ||--o{ personal_point_transactions : "earns"
+  workspaces ||--o{ personal_point_transactions : "scoped to"
+  tasks ||--o{ personal_point_transactions : "source"
+  users ||--o{ xp_events : "earns"
+  workspaces ||--o{ achievement_definitions : "has"
+  achievement_definitions ||--o{ achievement_definitions : "parent of"
+  tasks ||--o{ task_achievement_links : "linked"
+  achievement_definitions ||--o{ task_achievement_links : "linked"
+  achievement_definitions ||--o{ achievement_periods : "has periods"
+  achievement_periods ||--o{ achievement_evidence : "has evidence"
+  achievement_definitions ||--o{ achievement_evidence : "evidence for"
+  users ||--o{ companion_relationships : "invites"
+  users ||--o{ companion_relationships : "invited as"
+  companion_relationships ||--o{ companion_permission_grants : "has grants"
+  users ||--o{ companion_permission_grants : "owns"
+  users ||--o{ comments : "authors"
+  companion_relationships ||--o{ comments : "context"
+  companion_relationships ||--o{ companion_awards : "awards in"
+  users ||--o{ companion_awards : "acts"
+  users ||--o{ companion_awards : "receives"
+  tasks ||--o{ companion_awards : "awarded for"
+  workspaces ||--o{ milestones : "has"
+  milestones ||--o{ milestone_versions : "has versions"
+  users ||--o{ milestone_versions : "authors"
+  milestone_versions ||--o{ review_requests : "submitted as"
+  milestones ||--o{ review_requests : "requests for"
+  companion_relationships ||--o{ review_requests : "reviewer"
+  review_requests ||--o{ review_decisions : "has decisions"
+  users ||--o{ review_decisions : "decides"
+  badges ||--o{ recognition_records : "awarded as"
+  milestones ||--o{ recognition_records : "recognized"
+  milestone_versions ||--o{ recognition_records : "version"
+  review_requests ||--o{ recognition_records : "approved via"
+  users ||--o{ audit_events : "acts"
   </div>
   <div id="err"></div>
   <script>
-    mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    mermaid.initialize({ startOnLoad: true, theme: 'default', er: { useMaxWidth: false }, themeVariables: { fontSize: '16px' } });
     window.addEventListener('error', (e) => { document.getElementById('err').textContent += e.message + '\\n'; });
   </script>
 </body>
