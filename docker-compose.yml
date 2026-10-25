@@ -26,5 +26,19 @@ services:
     tmpfs:
       - /var/lib/postgresql/data
 
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://liferpg:liferpg@postgres:5432/liferpg
+      NEXTAUTH_SECRET: dev-secret-change-me-in-production-please-32charsmin
+      NEXTAUTH_URL: http://localhost:3000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
 volumes:
   pgdata:

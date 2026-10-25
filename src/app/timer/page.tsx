@@ -54,9 +54,7 @@ export default function TimerPage() {
   }, [session]);
 
   useEffect(() => {
-    if (session && session.state === "paused") {
-      setElapsed(session.accumulatedSeconds);
-    }
+    if (session && session.state === "paused") setElapsed(session.accumulatedSeconds);
     if (!session) setElapsed(0);
   }, [session]);
 
@@ -71,19 +69,6 @@ export default function TimerPage() {
     else setMessage("");
     await refresh();
     return data;
-  }
-
-  async function start() {
-    await call("/api/timer/start", { taskId: selectedTask || null });
-  }
-  async function pause() {
-    await call("/api/timer/pause");
-  }
-  async function resume() {
-    await call("/api/timer/resume");
-  }
-  async function stop() {
-    await call("/api/timer/stop");
   }
 
   async function submitManual(e: React.FormEvent) {
@@ -107,93 +92,77 @@ export default function TimerPage() {
   }
 
   return (
-    <section className="flex flex-col gap-6">
-      <h1 className="text-2xl font-semibold">Timer</h1>
-      {message && <p className="text-sm text-red-600">{message}</p>}
+    <div className="flex flex-col gap-6">
+      <div>
+        <h1 className="h1">Timer</h1>
+        <p className="muted mt-1">Track actual time. Stopping records time only — it does not complete tasks.</p>
+      </div>
+      {message && (
+        <div className="rounded-md border border-danger/40 bg-danger/10 px-3 py-2 text-sm text-danger">
+          {message}
+        </div>
+      )}
 
-      <div className="rounded border bg-surface p-4">
-        <p className="text-4xl font-mono">{formatSeconds(elapsed)}</p>
-        <p className="mt-1 text-sm text-muted">
-          {session ? `State: ${session.state}` : "No active timer"}
-        </p>
-        <div className="mt-3 flex flex-wrap gap-2">
+      <div className="card flex flex-col items-center gap-4 text-center">
+        <p className="font-mono text-6xl font-semibold tracking-tight">{formatSeconds(elapsed)}</p>
+        <p className="muted">{session ? `State: ${session.state}` : "No active timer"}</p>
+        <div className="flex flex-wrap items-center justify-center gap-2">
           <select
             value={selectedTask}
             onChange={(e) => setSelectedTask(e.target.value)}
-            className="rounded border px-2 py-1"
+            className="input"
           >
             <option value="">No task</option>
             {tasks.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.title}
-              </option>
+              <option key={t.id} value={t.id}>{t.title}</option>
             ))}
           </select>
           {!session && (
-            <button onClick={start} className="rounded bg-accent px-3 py-1 text-white">
+            <button onClick={() => call("/api/timer/start", { taskId: selectedTask || null })} className="btn btn-primary">
               Start
             </button>
           )}
           {session?.state === "running" && (
             <>
-              <button onClick={pause} className="rounded border px-3 py-1">
-                Pause
-              </button>
-              <button onClick={stop} className="rounded border px-3 py-1">
-                Stop
-              </button>
+              <button onClick={() => call("/api/timer/pause")} className="btn">Pause</button>
+              <button onClick={() => call("/api/timer/stop")} className="btn btn-danger">Stop</button>
             </>
           )}
           {session?.state === "paused" && (
             <>
-              <button onClick={resume} className="rounded bg-accent px-3 py-1 text-white">
-                Resume
-              </button>
-              <button onClick={stop} className="rounded border px-3 py-1">
-                Stop
-              </button>
+              <button onClick={() => call("/api/timer/resume")} className="btn btn-primary">Resume</button>
+              <button onClick={() => call("/api/timer/stop")} className="btn btn-danger">Stop</button>
             </>
           )}
         </div>
       </div>
 
-      <div className="rounded border bg-surface p-4">
-        <h2 className="text-lg font-semibold">Manual entry</h2>
-        <form onSubmit={submitManual} className="mt-3 flex flex-col gap-2">
-          <label className="text-sm">
-            Start
-            <input
-              type="datetime-local"
-              value={manual.startedAt}
+      <div className="card">
+        <h2 className="h2">Manual entry</h2>
+        <form onSubmit={submitManual} className="mt-4 grid gap-3 sm:grid-cols-2">
+          <label className="flex flex-col gap-1 text-sm">
+            <span className="muted">Start</span>
+            <input type="datetime-local" value={manual.startedAt}
               onChange={(e) => setManual({ ...manual, startedAt: e.target.value })}
-              className="ml-2 rounded border px-2 py-1"
-              required
-            />
+              className="input" required />
           </label>
-          <label className="text-sm">
-            End
-            <input
-              type="datetime-local"
-              value={manual.endedAt}
+          <label className="flex flex-col gap-1 text-sm">
+            <span className="muted">End</span>
+            <input type="datetime-local" value={manual.endedAt}
               onChange={(e) => setManual({ ...manual, endedAt: e.target.value })}
-              className="ml-2 rounded border px-2 py-1"
-              required
-            />
+              className="input" required />
           </label>
-          <label className="text-sm">
-            Notes
-            <input
-              type="text"
-              value={manual.notes}
+          <label className="flex flex-col gap-1 text-sm sm:col-span-2">
+            <span className="muted">Notes</span>
+            <input type="text" value={manual.notes}
               onChange={(e) => setManual({ ...manual, notes: e.target.value })}
-              className="ml-2 rounded border px-2 py-1"
-            />
+              className="input" />
           </label>
-          <button type="submit" className="self-start rounded border px-3 py-1">
-            Add entry
-          </button>
+          <div className="sm:col-span-2">
+            <button type="submit" className="btn">Add entry</button>
+          </div>
         </form>
       </div>
-    </section>
+    </div>
   );
 }
