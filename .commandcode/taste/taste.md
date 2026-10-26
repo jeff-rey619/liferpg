@@ -1,6 +1,7 @@
 - Prefers detailed, pre-implementation technical documentation—including architecture, phased roadmaps, and atomic implementation backlogs—with explicit, model-friendly instructions and decision boundaries that minimize guessing or hallucination; do not start coding until the plan is reviewed and approved. Confidence: 0.98.
 - Prefers project changes to be accompanied by files organized in a dedicated spec or arc folder for each change. Confidence: 0.84.
 - Prefers concise, crisp lists when summarizing completed work. Confidence: 0.9
-- Prefers good, polished UI in implementation. Confidence: 0.85
+- Prefers good, polished UI in implementation. Confidence: 0.9
+- Prefers a cozy, game-like UI aesthetic (e.g., desk-room style) for the app interface. Confidence: 0.85
 - Prefers backlog items to be marked complete with ticks and then proceed to the next task. Confidence: 0.8.
 - When running the dev server, bind it to 0.0.0.0 so it is reachable on the network/LAN. Confidence: 0.75.

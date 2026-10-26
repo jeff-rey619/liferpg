@@ -34,7 +34,8 @@ services:
       NODE_ENV: production
       DATABASE_URL: postgres://liferpg:liferpg@postgres:5432/liferpg
       NEXTAUTH_SECRET: dev-secret-change-me-in-production-please-32charsmin
-      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_URL: http://192.168.137.27:3000
+      AUTH_URL: http://192.168.137.27:3000
     depends_on:
       postgres:
         condition: service_healthy

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Life RPG — Cozy UI Mood Board</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #f7f1e8; color: #2b241c; margin: 0; padding: 24px; }
+    h1 { margin: 0 0 8px; }
+    .muted { color: #7a6f62; font-size: 0.9rem; }
+    .swatches { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0; }
+    .swatch { width: 96px; height: 96px; border-radius: 12px; display: flex; align-items: flex-end; padding: 8px; color: #fff; font-size: 0.75rem; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+    .card { background: #fffaf2; border: 1px solid #e3d8c6; border-radius: 14px; padding: 16px; margin: 12px 0; }
+    .room { background: linear-gradient(180deg, #f0e7d8 0%, #f7f1e8 100%); border: 1px solid #e3d8c6; border-radius: 16px; padding: 24px; min-height: 260px; position: relative; }
+    .obj { position: absolute; background: #fffaf2; border: 1px solid #e3d8c6; border-radius: 10px; padding: 10px 14px; font-size: 0.85rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+  </style>
+</head>
+<body>
+  <h1>Life RPG — Cozy Desk-Room UI Mood Board</h1>
+  <p class="muted">Concept exploration. Warm, muted, pastel. Desk/room as navigable home; objects are direct entry points.</p>
+
+  <h2>Palette</h2>
+  <div class="swatches">
+    <div class="swatch" style="background:#f7f1e8;color:#2b241c;">Cream #f7f1e8</div>
+    <div class="swatch" style="background:#fffaf2;color:#2b241c;">Surface #fffaf2</div>
+    <div class="swatch" style="background:#f0e7d8;color:#2b241c;">Surface-2 #f0e7d8</div>
+    <div class="swatch" style="background:#b8895a;">Accent #b8895a</div>
+    <div class="swatch" style="background:#8a6a4a;">Accent-2 #8a6a4a</div>
+    <div class="swatch" style="background:#7a6f62;">Muted #7a6f62</div>
+    <div class="swatch" style="background:#4f7a5a;">Success #4f7a5a</div>
+    <div class="swatch" style="background:#b04a3a;">Danger #b04a3a</div>
+  </div>
+
+  <h2>Desk Room (concept)</h2>
+  <div class="room">
+    <div class="obj" style="top:20px;left:20px;">📅 Desk Calendar<br/><span class="muted">timetable</span></div>
+    <div class="obj" style="top:20px;right:20px;">📓 Notebook<br/><span class="muted">tasks & projects</span></div>
+    <div class="obj" style="bottom:20px;left:20px;">⏱ Desk Timer<br/><span class="muted">time tracking</span></div>
+    <div class="obj" style="bottom:20px;right:20px;">📚 Bookshelf<br/><span class="muted">learning journeys</span></div>
+    <div class="obj" style="top:50%;left:50%;transform:translate(-50%,-50%);">🏆 Achievement Display<br/><span class="muted">quests</span></div>
+    <div class="obj" style="bottom:20px;left:50%;transform:translateX(-50%);">🏅 Trophy Shelf<br/><span class="muted">recognition</span></div>
+    <div class="obj" style="top:20px;left:50%;transform:translateX(-50%);">✉ Letters<br/><span class="muted">inbox / reviews</span></div>
+  </div>
+
+  <div class="card">
+    <h2>Principles</h2>
+    <ul>
+      <li>Desk is a navigable home, not a gate — conventional nav always available.</li>
+      <li>Each object is a real button/link with accessible label and keyboard focus.</li>
+      <li>Warm muted pastels, rounded corners, soft shadows, paper texture.</li>
+      <li>Subtle ambient motion (lamp glow, dust motes) — disabled under prefers-reduced-motion.</li>
+      <li>Mobile: vertical stack of object cards instead of isometric room.</li>
+      <li>Empty states use cozy illustrations; progress subtly changes the scene.</li>
+    </ul>
+  </div>
+</body>
+</html>
