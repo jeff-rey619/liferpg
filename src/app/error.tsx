@@ -1,23 +1,30 @@
 "use client";
 
-export default function Error({
+import { useEffect } from "react";
+
+export default function ErrorPage({
   error,
   reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  useEffect(() => {
+    console.error(error);
+  }, [error]);
+
   return (
-    <section className="flex flex-1 flex-col items-center justify-center p-6">
-      <h1 className="text-xl font-semibold">Something went wrong</h1>
-      <p className="mt-2 text-sm text-gray-600">{error.message}</p>
-      <button
-        type="button"
-        onClick={reset}
-        className="mt-4 rounded border px-3 py-2 text-sm"
-      >
-        Try again
-      </button>
-    </section>
+    <div className="flex min-h-[60vh] items-center justify-center">
+      <div className="card w-full max-w-md text-center">
+        <span className="text-4xl" aria-hidden="true">
+          🍂
+        </span>
+        <h1 className="h1 mt-2">A draft blew through</h1>
+        <h2 className="h3 mt-1 text-danger">{error?.message ?? "Something went wrong"}</h2>
+        <button type="button" className="btn btn-primary mt-4" onClick={reset}>
+          Try again
+        </button>
+      </div>
+    </div>
   );
 }

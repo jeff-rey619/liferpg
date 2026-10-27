@@ -26,6 +26,8 @@ export async function PATCH(
   if (body.startedAt) updates.startedAt = new Date(body.startedAt);
   if (body.endedAt) updates.endedAt = new Date(body.endedAt);
   if (body.notes !== undefined) updates.notes = body.notes;
+  if (body.taskId !== undefined) updates.taskId = body.taskId || null;
+  if (body.projectId !== undefined) updates.projectId = body.projectId || null;
   if (body.correctionOf !== undefined) updates.correctionOf = body.correctionOf;
   if (updates.startedAt || updates.endedAt) {
     const s = (updates.startedAt as Date) ?? existing.startedAt;

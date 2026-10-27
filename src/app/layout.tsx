@@ -1,38 +1,27 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Epilogue, Quicksand } from "next/font/google";
 import "./globals.css";
+import "./fonts.css";
 import { Providers } from "@/components/providers";
 import { AppShell } from "@/components/AppShell";
 
 // Hearth & Timber type roles: display, narrative body, HUD labels.
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-bricolage",
-  subsets: ["latin"],
-  weight: ["600", "700", "800"],
-});
-
-const quicksand = Quicksand({
-  variable: "--font-quicksand",
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-});
-
-const epilogue = Epilogue({
-  variable: "--font-epilogue",
-  subsets: ["latin"],
-  weight: ["600", "700", "800"],
-});
-
+// Fonts are self-hosted (src/app/fonts.css + src/app/fonts/) so the build
+// works offline — next/font/google requires network access.
 export const metadata: Metadata = {
   title: "Life RPG",
   description: "Cozy, game-like life management",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${bricolage.variable} ${quicksand.variable} ${epilogue.variable} h-full antialiased`}
+      className="h-full antialiased"
+      style={{
+        "--font-bricolage": "'Bricolage Grotesque', ui-rounded, system-ui, sans-serif",
+        "--font-quicksand": "'Quicksand', ui-rounded, system-ui, sans-serif",
+        "--font-epilogue": "'Epilogue', system-ui, sans-serif",
+      } as React.CSSProperties}
     >
       <body className="min-h-full flex flex-col">
         <a

@@ -6,33 +6,40 @@ import { signIn } from "next-auth/react";
 export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    await signIn("credentials", { email, callbackUrl: "/" });
+    setLoading(false);
+  }
+
   return (
-    <div className="mx-auto max-w-md">
-      <div className="card">
-        <h1 className="h1">Sign in</h1>
-        <p className="muted mt-1">Create an account with just your email. No password needed (dev mode).</p>
-        <form
-          className="mt-6 flex flex-col gap-4"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            setLoading(true);
-            await signIn("credentials", { email, callbackUrl: "/" });
-            setLoading(false);
-          }}
-        >
-          <label className="flex flex-col gap-1 text-sm">
-            <span className="muted">Email</span>
+    <div className="flex min-h-[60vh] items-center justify-center">
+      <div className="card w-full max-w-md">
+        <div className="mb-4 text-center">
+          <span className="text-4xl" aria-hidden="true">
+            🔑
+          </span>
+          <h1 className="h2 mt-2">Hearth Key</h1>
+          <p className="muted text-sm">
+            Enter your email to step into the desk chamber.
+          </p>
+        </div>
+        <form onSubmit={submit} className="flex flex-col gap-3">
+          <div>
+            <label className="label mb-1 block">Email</label>
             <input
               type="email"
+              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              className="input"
-              required
+              placeholder="you@hearth.com"
+              className="input w-full"
             />
-          </label>
-          <button type="submit" disabled={loading} className="btn btn-primary">
-            {loading ? "Signing in..." : "Sign in"}
+          </div>
+          <button type="submit" className="btn btn-primary" disabled={loading}>
+            {loading ? "Entering…" : "Enter the Hearth"}
           </button>
         </form>
       </div>
